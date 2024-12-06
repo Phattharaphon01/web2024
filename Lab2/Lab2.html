@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Quiz</title>
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.6.14/dist/vuetify.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.6.14/dist/vuetify.min.js"></script>
+  <style>
+    body {
+      background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    .v-card {
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      background: linear-gradient(135deg, #ffffff, #f5f5f5);
+    }
+    .v-btn {
+      font-size: 16px;
+      font-weight: bold;
+      text-transform: none;
+      background: linear-gradient(45deg, #36d1dc, #5b86e5);
+      color: white !important;
+      border: none;
+    }
+    .v-btn:hover {
+      background: linear-gradient(45deg, #5b86e5, #36d1dc);
+    }
+    p, .v-card-title {
+      color: #444;
+    }
+    .v-card.outlined {
+      transition: 0.3s;
+      background: #f9f9f9;
+    }
+    .v-card.outlined:hover {
+      background: linear-gradient(45deg, #ffe259, #ffa751);
+      color: white;
+    }
+    .text-h5 {
+      font-size: 24px;
+      font-weight: bold;
+      color: #ff6f61;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <v-app>
+      <v-container>
+        <v-card v-if="step === 'start'" class="pa-5">
+          <v-card-title class="text-h5">Welcome to the Online Quiz</v-card-title>
+          <v-card-text>
+            <p>เลือกวิชาและเริ่มทำแบบทดสอบได้เลย!</p>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn color="primary" @click="startQuiz">เริ่มทำแบบทดสอบ</v-btn>
+          </v-card-actions>
+        </v-card>
+
+        <v-card v-else-if="step === 'selectSubject'" class="pa-5">
+          <v-card-title class="text-h5">Select Subject</v-card-title>
+          <v-select
+            v-model="selectedSubject"
+            :items="subjects"
+            label="เลือกวิชา"
+            outlined
+          ></v-select>
+          <v-btn :disabled="!selectedSubject" color="primary" @click="loadQuestions">
+            เลือก
+          </v-btn>
+        </v-card>
+
+        <v-card v-else-if="step === 'quiz'" class="pa-5">
+          <v-card-title class="text-h5">คำถามที่ {{ currentQuestionIndex + 1 }} / {{ questions.length }}</v-card-title>
+          <v-card-text>
+            <p>{{ currentQuestion.question }}</p>
+            <v-row>
+              <v-col
+                v-for="(option, index) in currentQuestion.options"
+                :key="index"
+                cols="12"
+                md="6"
+              >
+                <v-card
+                  :elevation="answers[currentQuestionIndex] === option ? 8 : 2"
+                  class="pa-3"
+                  outlined
+                  :color="answers[currentQuestionIndex] === option ? 'primary' : ''"
+                  @click="selectAnswer(option)"
+                >
+                  <v-card-title class="text-h6">{{ option }}</v-card-title>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn :disabled="currentQuestionIndex === 0" @click="prevQuestion">ย้อนกลับ</v-btn>
+            <v-btn v-if="currentQuestionIndex < questions.length - 1" @click="nextQuestion">
+              ถัดไป
+            </v-btn>
+            <v-btn v-else color="success" @click="checkAnswers">ส่งคำตอบ</v-btn>
+          </v-card-actions>
+        </v-card>
+
+        <v-card v-else-if="step === 'result'" class="pa-5">
+          <v-card-title class="text-h5">ผลคะแนนของคุณ</v-card-title>
+          <v-card-text>
+            <p>คุณทำได้ {{ score }} / {{ questions.length }} คะแนน</p>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn color="primary" @click="restartQuiz">เริ่มใหม่</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-container>
+    </v-app>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
