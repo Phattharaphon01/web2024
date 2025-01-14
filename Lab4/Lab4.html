@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>VR Introduction</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <!-- พื้นหลังแบบ 360 -->
+      <a-sky src="galaxies.webp"></a-sky>
+
+      <!-- ข้อมูลแนะนำตัว -->
+      <a-text value="Phattharaphon Phoma" position="-1 2.8 -3" width="4" color="#fff"></a-text>
+      <a-text value="653380145-6" position="-1 2.6 -3" width="4" color="#fff"></a-text>
+      <a-text value="College of Computing" position="-1 2.4 -3" width="4" color="#fff"></a-text>
+      <a-text value="Computer Science" position="-1 2.2 -3" width="4" color="#fff"></a-text>
+      <a-text value="Khon Kaen University" position="-1 2 -3" width="4" color="#fff"></a-text>
+
+      <!-- ภาพที่หมุนไปมา -->
+      <a-image src="1652952807414.jpg" position="0 0.5 -3" width="1.5" height="2" 
+               animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"></a-image>
+       <!-- โมเดล 3D -->
+       <a-entity gltf-model="league_of_legends_-_aurelion_sol.glb" position="0 4 -4" scale="0.01 0.01 0.01" 
+       animation__rotation="property: rotation; to: 0 360 0; loop: true; dur: 5000"
+       animation__position="property: position; to: 0 3 -4; dir: alternate; loop: true; dur: 2000"></a-entity>
+
+      <!-- Camera เพื่อมองไปรอบ ๆ -->
+      <a-camera position="0 1.6 0">
+        <a-cursor></a-cursor>
+      </a-camera>
+    </a-scene>
+  </body>
+</html>
